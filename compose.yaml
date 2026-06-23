@@ -1,0 +1,57 @@
+services:
+  tilearchive:
+    image: docker.io/mariadb:latest
+#    container_name: tilearchive-container
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - tile-volume:/var/lib/mysql
+      - ./DatabaseNearFinal.sql:/docker-entrypoint-initdb.d/DatabaseNearFinal.sql
+    networks:
+      - ceramnote
+
+  ceramnote-frontend:
+    build: ./frontend
+#    image: localhost/cacticouncil/ceramnote_frontend:latest
+#    container_name: ceramnote-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - tilearchive
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./data:/data
+    networks:
+      - ceramnote
+
+  backend:
+    build: ./backend
+#    image: cacticouncil/ceramnote_backend:latest
+    container_name: ceramnote-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    depends_on:
+      - tilearchive
+    networks:
+      - ceramnote
+
+volumes:
+  tile-volume:
+  data-volume:
+
+# Added all of this
+networks:
+  ceramnote:
+    driver: bridge
