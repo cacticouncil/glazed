@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "trainedAt": "2026-07-07T13:26:24.763Z",
+  "weights": {
+    "bias": -0.073412,
+    "clipScore": 1.927476,
+    "colorScore": 1.1,
+    "metadataScore": 0.351678,
+    "visualScore": 0.18,
+    "visualPenalty": -2.79398,
+    "exclusionPenalty": -1
+  },
+  "metrics": {
+    "examples": 585,
+    "accuracy": 0.7265
+  },
+  "counts": {
+    "seedExamples": 498,
+    "feedbackExamples": 87
+  }
+}

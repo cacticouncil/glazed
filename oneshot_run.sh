@@ -1,4 +1,13 @@
 #! /usr/bin/env bash
-curl -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/.env
-sudo docker compose down -v
-sudo docker compose up -d
+set -euo pipefail
+
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
+
+podman compose down -v || true
+podman compose up -d --build
+
+echo "Glazed is running:"
+echo "  Admin app: http://localhost"
+echo "  Backend docs: http://localhost:8000/docs"

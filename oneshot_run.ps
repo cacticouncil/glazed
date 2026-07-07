@@ -1,4 +1,10 @@
-command for linux:
-curl -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/compose.yaml && curl -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/.env && curl -L -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/Tile_Images.zip && curl -L -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/DatabaseNearFinal.sql && curl -L -o ASTEM_DB https://raw.githubusercontent.com/Gairolld/astem-combined/main/db-interface/ASTEM_DB && chmod +x ASTEM_DB && docker-compose down -v && docker-compose up -d
-command for windows powershell:
-curl.exe -L -o compose.yaml https://raw.githubusercontent.com/Gairolld/astem-combined/main/compose.yaml; curl.exe -L -o .env https://raw.githubusercontent.com/Gairolld/astem-combined/main/.env; curl.exe -L -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/Tile_Images.zip; curl.exe -L -O https://raw.githubusercontent.com/Gairolld/astem-combined/main/DatabaseNearFinal.sql; docker-compose down -v; docker-compose up -d
+if (-not (Test-Path ".env")) {
+  Copy-Item ".env.example" ".env"
+}
+
+podman compose down -v
+podman compose up -d --build
+
+Write-Host "Glazed is running:"
+Write-Host "  Admin app: http://localhost"
+Write-Host "  Backend docs: http://localhost:8000/docs"
