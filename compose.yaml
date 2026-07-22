@@ -50,6 +50,15 @@ services:
     networks:
       - glazed
 
+  chroma:
+    image: docker.io/chromadb/chroma:latest
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./data/chroma:/chroma/chroma
+    networks:
+      - glazed
+
 volumes:
   tile-volume:
   data-volume:
