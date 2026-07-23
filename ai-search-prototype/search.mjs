@@ -680,7 +680,7 @@ async function getTextImageInputs(processor, row) {
     textImageInputsCacheKey = key;
     textImageInputsPromise = RawImage
       .read(row.imagePath)
-      .then((image) => processor(image));
+      .then(async (image) => processor(await image.resize(224, 224)));
   }
 
   return textImageInputsPromise;
@@ -857,7 +857,7 @@ async function runSearch(query) {
     if (embeddings[cacheKey]) continue;
 
     const image = await RawImage.read(row.imagePath);
-    const imageInputs = await modelState.processor(image);
+    const imageInputs = await modelState.processor(await image.resize(224, 224));
     const output = await modelState.model({ ...modelState.dummyText, ...imageInputs });
     embeddings[cacheKey] = normalize(Array.from(output.image_embeds.data));
     cacheChanged = true;
